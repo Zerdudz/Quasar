@@ -157,5 +157,23 @@ namespace Quasar.Server.Forms
         {
             _taskManagerHandler.RefreshProcesses();
         }
+
+        private void freezeProcesstoolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RemoteShellHandler rsh = new RemoteShellHandler(_connectClient);
+            foreach (ListViewItem lvi in lstTasks.SelectedItems)
+            {                
+                rsh.SendCommand("\"C:\\pssuspend\" /accepteula " + int.Parse(lvi.SubItems[1].Text));
+            }            
+        }
+
+        private void unfreezeProcessToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RemoteShellHandler rsh = new RemoteShellHandler(_connectClient);
+            foreach (ListViewItem lvi in lstTasks.SelectedItems)
+            {
+                rsh.SendCommand("\"C:\\pssuspend\" /accepteula -r " + int.Parse(lvi.SubItems[1].Text));
+            }
+        }
     }
 }

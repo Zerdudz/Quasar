@@ -19,7 +19,7 @@ namespace Quasar.Server.Forms
         /// <summary>
         /// The message handler for handling the communication with the client.
         /// </summary>
-        private readonly KeyloggerHandler _keyloggerHandler;
+        public readonly KeyloggerHandler _keyloggerHandler;
 
         /// <summary>
         /// Path to the base download directory of the client.
@@ -94,7 +94,7 @@ namespace Quasar.Server.Forms
         {
             if (!connected)
             {
-                this.Invoke((MethodInvoker)this.Close);
+                //this.Invoke((MethodInvoker)this.Close);
             }
         }
 
@@ -146,6 +146,12 @@ namespace Quasar.Server.Forms
 
         private void RefreshLogsDirectory()
         {
+            //Create Logs directory
+            if (!Directory.Exists(_baseDownloadPath))
+            {
+                Directory.CreateDirectory(_baseDownloadPath);
+            }
+
             lstLogs.Items.Clear();
 
             DirectoryInfo dicInfo = new DirectoryInfo(_baseDownloadPath);

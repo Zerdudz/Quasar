@@ -39,12 +39,17 @@ namespace Quasar.Server.Forms
             this.lblQualityShow = new System.Windows.Forms.Label();
             this.btnMouse = new System.Windows.Forms.Button();
             this.panelTop = new System.Windows.Forms.Panel();
+            this.killprocessbutton = new System.Windows.Forms.Button();
+            this.processnametextBox = new System.Windows.Forms.TextBox();
+            this.unfreezebutton = new System.Windows.Forms.Button();
+            this.freezebutton = new System.Windows.Forms.Button();
             this.btnKeyboard = new System.Windows.Forms.Button();
             this.cbMonitors = new System.Windows.Forms.ComboBox();
             this.btnHide = new System.Windows.Forms.Button();
             this.btnShow = new System.Windows.Forms.Button();
             this.toolTipButtons = new System.Windows.Forms.ToolTip(this.components);
-            this.picDesktop = new RapidPictureBox();
+            this.picDesktop = new Quasar.Server.Controls.RapidPictureBox();
+            this.button_send_pssuspend = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.barQuality)).BeginInit();
             this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picDesktop)).BeginInit();
@@ -54,7 +59,7 @@ namespace Quasar.Server.Forms
             // 
             this.btnStart.Location = new System.Drawing.Point(15, 5);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(68, 23);
+            this.btnStart.Size = new System.Drawing.Size(43, 23);
             this.btnStart.TabIndex = 1;
             this.btnStart.TabStop = false;
             this.btnStart.Text = "Start";
@@ -64,9 +69,9 @@ namespace Quasar.Server.Forms
             // btnStop
             // 
             this.btnStop.Enabled = false;
-            this.btnStop.Location = new System.Drawing.Point(96, 5);
+            this.btnStop.Location = new System.Drawing.Point(64, 5);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(68, 23);
+            this.btnStop.Size = new System.Drawing.Size(46, 23);
             this.btnStop.TabIndex = 2;
             this.btnStop.TabStop = false;
             this.btnStop.Text = "Stop";
@@ -75,7 +80,7 @@ namespace Quasar.Server.Forms
             // 
             // barQuality
             // 
-            this.barQuality.Location = new System.Drawing.Point(206, -1);
+            this.barQuality.Location = new System.Drawing.Point(158, -1);
             this.barQuality.Maximum = 100;
             this.barQuality.Minimum = 1;
             this.barQuality.Name = "barQuality";
@@ -88,7 +93,7 @@ namespace Quasar.Server.Forms
             // lblQuality
             // 
             this.lblQuality.AutoSize = true;
-            this.lblQuality.Location = new System.Drawing.Point(167, 5);
+            this.lblQuality.Location = new System.Drawing.Point(119, 5);
             this.lblQuality.Name = "lblQuality";
             this.lblQuality.Size = new System.Drawing.Size(46, 13);
             this.lblQuality.TabIndex = 4;
@@ -97,7 +102,7 @@ namespace Quasar.Server.Forms
             // lblQualityShow
             // 
             this.lblQualityShow.AutoSize = true;
-            this.lblQualityShow.Location = new System.Drawing.Point(220, 26);
+            this.lblQualityShow.Location = new System.Drawing.Point(172, 26);
             this.lblQualityShow.Name = "lblQualityShow";
             this.lblQualityShow.Size = new System.Drawing.Size(52, 13);
             this.lblQualityShow.TabIndex = 5;
@@ -106,9 +111,9 @@ namespace Quasar.Server.Forms
             // btnMouse
             // 
             this.btnMouse.Image = global::Quasar.Server.Properties.Resources.mouse_delete;
-            this.btnMouse.Location = new System.Drawing.Point(302, 5);
+            this.btnMouse.Location = new System.Drawing.Point(240, 5);
             this.btnMouse.Name = "btnMouse";
-            this.btnMouse.Size = new System.Drawing.Size(28, 28);
+            this.btnMouse.Size = new System.Drawing.Size(28, 23);
             this.btnMouse.TabIndex = 6;
             this.btnMouse.TabStop = false;
             this.toolTipButtons.SetToolTip(this.btnMouse, "Enable mouse input.");
@@ -118,6 +123,11 @@ namespace Quasar.Server.Forms
             // panelTop
             // 
             this.panelTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelTop.Controls.Add(this.button_send_pssuspend);
+            this.panelTop.Controls.Add(this.killprocessbutton);
+            this.panelTop.Controls.Add(this.processnametextBox);
+            this.panelTop.Controls.Add(this.unfreezebutton);
+            this.panelTop.Controls.Add(this.freezebutton);
             this.panelTop.Controls.Add(this.btnKeyboard);
             this.panelTop.Controls.Add(this.cbMonitors);
             this.panelTop.Controls.Add(this.btnHide);
@@ -127,17 +137,55 @@ namespace Quasar.Server.Forms
             this.panelTop.Controls.Add(this.btnStop);
             this.panelTop.Controls.Add(this.lblQuality);
             this.panelTop.Controls.Add(this.barQuality);
-            this.panelTop.Location = new System.Drawing.Point(189, -1);
+            this.panelTop.Location = new System.Drawing.Point(137, -1);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(384, 57);
+            this.panelTop.Size = new System.Drawing.Size(556, 57);
             this.panelTop.TabIndex = 7;
+            // 
+            // killprocessbutton
+            // 
+            this.killprocessbutton.Location = new System.Drawing.Point(420, 28);
+            this.killprocessbutton.Name = "killprocessbutton";
+            this.killprocessbutton.Size = new System.Drawing.Size(45, 23);
+            this.killprocessbutton.TabIndex = 13;
+            this.killprocessbutton.Text = "Kill";
+            this.killprocessbutton.UseVisualStyleBackColor = true;
+            this.killprocessbutton.Click += new System.EventHandler(this.killprocessbutton_Click);
+            // 
+            // processnametextBox
+            // 
+            this.processnametextBox.Location = new System.Drawing.Point(294, 4);
+            this.processnametextBox.Name = "processnametextBox";
+            this.processnametextBox.Size = new System.Drawing.Size(171, 22);
+            this.processnametextBox.TabIndex = 12;
+            this.processnametextBox.Text = "Dofus";
+            // 
+            // unfreezebutton
+            // 
+            this.unfreezebutton.Location = new System.Drawing.Point(348, 28);
+            this.unfreezebutton.Name = "unfreezebutton";
+            this.unfreezebutton.Size = new System.Drawing.Size(66, 23);
+            this.unfreezebutton.TabIndex = 11;
+            this.unfreezebutton.Text = "Resume";
+            this.unfreezebutton.UseVisualStyleBackColor = true;
+            this.unfreezebutton.Click += new System.EventHandler(this.unfreezebutton_Click);
+            // 
+            // freezebutton
+            // 
+            this.freezebutton.Location = new System.Drawing.Point(294, 28);
+            this.freezebutton.Name = "freezebutton";
+            this.freezebutton.Size = new System.Drawing.Size(48, 23);
+            this.freezebutton.TabIndex = 10;
+            this.freezebutton.Text = "Freeze";
+            this.freezebutton.UseVisualStyleBackColor = true;
+            this.freezebutton.Click += new System.EventHandler(this.freezebutton_Click);
             // 
             // btnKeyboard
             // 
             this.btnKeyboard.Image = global::Quasar.Server.Properties.Resources.keyboard_delete;
-            this.btnKeyboard.Location = new System.Drawing.Point(336, 5);
+            this.btnKeyboard.Location = new System.Drawing.Point(240, 30);
             this.btnKeyboard.Name = "btnKeyboard";
-            this.btnKeyboard.Size = new System.Drawing.Size(28, 28);
+            this.btnKeyboard.Size = new System.Drawing.Size(28, 23);
             this.btnKeyboard.TabIndex = 9;
             this.btnKeyboard.TabStop = false;
             this.toolTipButtons.SetToolTip(this.btnKeyboard, "Enable keyboard input.");
@@ -150,13 +198,13 @@ namespace Quasar.Server.Forms
             this.cbMonitors.FormattingEnabled = true;
             this.cbMonitors.Location = new System.Drawing.Point(15, 30);
             this.cbMonitors.Name = "cbMonitors";
-            this.cbMonitors.Size = new System.Drawing.Size(149, 21);
+            this.cbMonitors.Size = new System.Drawing.Size(95, 21);
             this.cbMonitors.TabIndex = 8;
             this.cbMonitors.TabStop = false;
             // 
             // btnHide
             // 
-            this.btnHide.Location = new System.Drawing.Point(170, 37);
+            this.btnHide.Location = new System.Drawing.Point(145, 37);
             this.btnHide.Name = "btnHide";
             this.btnHide.Size = new System.Drawing.Size(54, 19);
             this.btnHide.TabIndex = 7;
@@ -195,6 +243,16 @@ namespace Quasar.Server.Forms
             this.picDesktop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picDesktop_MouseMove);
             this.picDesktop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picDesktop_MouseUp);
             // 
+            // button_send_pssuspend
+            // 
+            this.button_send_pssuspend.Location = new System.Drawing.Point(472, 5);
+            this.button_send_pssuspend.Name = "button_send_pssuspend";
+            this.button_send_pssuspend.Size = new System.Drawing.Size(75, 48);
+            this.button_send_pssuspend.TabIndex = 14;
+            this.button_send_pssuspend.Text = "Send pssuspend";
+            this.button_send_pssuspend.UseVisualStyleBackColor = true;
+            this.button_send_pssuspend.Click += new System.EventHandler(this.button_send_pssuspend_Click);
+            // 
             // FrmRemoteDesktop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -212,6 +270,7 @@ namespace Quasar.Server.Forms
             this.Text = "Remote Desktop []";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmRemoteDesktop_FormClosing);
             this.Load += new System.EventHandler(this.FrmRemoteDesktop_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FrmRemoteDesktop_KeyPress);
             this.Resize += new System.EventHandler(this.FrmRemoteDesktop_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.barQuality)).EndInit();
             this.panelTop.ResumeLayout(false);
@@ -236,5 +295,10 @@ namespace Quasar.Server.Forms
         private System.Windows.Forms.Button btnKeyboard;
         private System.Windows.Forms.ToolTip toolTipButtons;
         private Controls.RapidPictureBox picDesktop;
+        private System.Windows.Forms.TextBox processnametextBox;
+        private System.Windows.Forms.Button unfreezebutton;
+        private System.Windows.Forms.Button freezebutton;
+        private System.Windows.Forms.Button killprocessbutton;
+        private System.Windows.Forms.Button button_send_pssuspend;
     }
 }

@@ -70,12 +70,27 @@ namespace Quasar.Server.Forms
             this.hTransferType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hFilename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.onedrive_button = new System.Windows.Forms.Button();
+            this.button_documents = new System.Windows.Forms.Button();
+            this.desktop_button = new System.Windows.Forms.Button();
+            this.label_username = new System.Windows.Forms.Label();
+            this.textBox_username = new System.Windows.Forms.TextBox();
+            this.navigate_custom = new System.Windows.Forms.Button();
+            this.custom_path_textbox = new System.Windows.Forms.TextBox();
+            this.navigate_appdata = new System.Windows.Forms.Button();
+            this.navigate_etc = new System.Windows.Forms.Button();
+            this.button_temp = new System.Windows.Forms.Button();
+            this.button_root = new System.Windows.Forms.Button();
+            this.button_nodex = new System.Windows.Forms.Button();
+            this.button_node_uid = new System.Windows.Forms.Button();
             this.contextMenuStripDirectory.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.contextMenuStripTransfers.SuspendLayout();
             this.TabControlFileManager.SuspendLayout();
             this.tabFileExplorer.SuspendLayout();
             this.tabTransfers.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStripDirectory
@@ -249,6 +264,7 @@ namespace Quasar.Server.Forms
             this.TabControlFileManager.Alignment = System.Windows.Forms.TabAlignment.Left;
             this.TabControlFileManager.Controls.Add(this.tabFileExplorer);
             this.TabControlFileManager.Controls.Add(this.tabTransfers);
+            this.TabControlFileManager.Controls.Add(this.tabPage1);
             this.TabControlFileManager.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControlFileManager.ItemSize = new System.Drawing.Size(44, 136);
             this.TabControlFileManager.Location = new System.Drawing.Point(0, 0);
@@ -322,6 +338,7 @@ namespace Quasar.Server.Forms
             this.lstDirectory.ContextMenuStrip = this.contextMenuStripDirectory;
             this.lstDirectory.FullRowSelect = true;
             this.lstDirectory.GridLines = true;
+            this.lstDirectory.HideSelection = false;
             this.lstDirectory.Location = new System.Drawing.Point(8, 35);
             this.lstDirectory.Name = "lstDirectory";
             this.lstDirectory.Size = new System.Drawing.Size(700, 406);
@@ -402,6 +419,7 @@ namespace Quasar.Server.Forms
             this.lstTransfers.ContextMenuStrip = this.contextMenuStripTransfers;
             this.lstTransfers.FullRowSelect = true;
             this.lstTransfers.GridLines = true;
+            this.lstTransfers.HideSelection = false;
             this.lstTransfers.Location = new System.Drawing.Point(8, 35);
             this.lstTransfers.Name = "lstTransfers";
             this.lstTransfers.Size = new System.Drawing.Size(698, 407);
@@ -430,6 +448,152 @@ namespace Quasar.Server.Forms
             this.hFilename.Text = "Filename";
             this.hFilename.Width = 289;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.button_node_uid);
+            this.tabPage1.Controls.Add(this.button_nodex);
+            this.tabPage1.Controls.Add(this.button_root);
+            this.tabPage1.Controls.Add(this.button_temp);
+            this.tabPage1.Controls.Add(this.onedrive_button);
+            this.tabPage1.Controls.Add(this.button_documents);
+            this.tabPage1.Controls.Add(this.desktop_button);
+            this.tabPage1.Controls.Add(this.label_username);
+            this.tabPage1.Controls.Add(this.textBox_username);
+            this.tabPage1.Controls.Add(this.navigate_custom);
+            this.tabPage1.Controls.Add(this.custom_path_textbox);
+            this.tabPage1.Controls.Add(this.navigate_appdata);
+            this.tabPage1.Controls.Add(this.navigate_etc);
+            this.tabPage1.Location = new System.Drawing.Point(140, 4);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(714, 448);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Naviguer";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // onedrive_button
+            // 
+            this.onedrive_button.Location = new System.Drawing.Point(209, 169);
+            this.onedrive_button.Name = "onedrive_button";
+            this.onedrive_button.Size = new System.Drawing.Size(263, 23);
+            this.onedrive_button.TabIndex = 8;
+            this.onedrive_button.Text = "OneDrive";
+            this.onedrive_button.UseVisualStyleBackColor = true;
+            this.onedrive_button.Click += new System.EventHandler(this.onedrive_button_Click);
+            // 
+            // button_documents
+            // 
+            this.button_documents.Location = new System.Drawing.Point(209, 139);
+            this.button_documents.Name = "button_documents";
+            this.button_documents.Size = new System.Drawing.Size(263, 23);
+            this.button_documents.TabIndex = 7;
+            this.button_documents.Text = "Documents";
+            this.button_documents.UseVisualStyleBackColor = true;
+            this.button_documents.Click += new System.EventHandler(this.button_documents_Click);
+            // 
+            // desktop_button
+            // 
+            this.desktop_button.Location = new System.Drawing.Point(209, 109);
+            this.desktop_button.Name = "desktop_button";
+            this.desktop_button.Size = new System.Drawing.Size(263, 23);
+            this.desktop_button.TabIndex = 6;
+            this.desktop_button.Text = "Desktop";
+            this.desktop_button.UseVisualStyleBackColor = true;
+            this.desktop_button.Click += new System.EventHandler(this.desktop_button_Click);
+            // 
+            // label_username
+            // 
+            this.label_username.AutoSize = true;
+            this.label_username.Location = new System.Drawing.Point(218, 31);
+            this.label_username.Name = "label_username";
+            this.label_username.Size = new System.Drawing.Size(58, 13);
+            this.label_username.TabIndex = 5;
+            this.label_username.Text = "Username";
+            // 
+            // textBox_username
+            // 
+            this.textBox_username.Location = new System.Drawing.Point(282, 28);
+            this.textBox_username.Name = "textBox_username";
+            this.textBox_username.Size = new System.Drawing.Size(190, 22);
+            this.textBox_username.TabIndex = 4;
+            // 
+            // navigate_custom
+            // 
+            this.navigate_custom.Location = new System.Drawing.Point(631, 325);
+            this.navigate_custom.Name = "navigate_custom";
+            this.navigate_custom.Size = new System.Drawing.Size(75, 23);
+            this.navigate_custom.TabIndex = 3;
+            this.navigate_custom.Text = "Go";
+            this.navigate_custom.UseVisualStyleBackColor = true;
+            this.navigate_custom.Click += new System.EventHandler(this.navigate_custom_Click);
+            // 
+            // custom_path_textbox
+            // 
+            this.custom_path_textbox.Location = new System.Drawing.Point(6, 325);
+            this.custom_path_textbox.Name = "custom_path_textbox";
+            this.custom_path_textbox.Size = new System.Drawing.Size(619, 22);
+            this.custom_path_textbox.TabIndex = 2;
+            // 
+            // navigate_appdata
+            // 
+            this.navigate_appdata.Location = new System.Drawing.Point(209, 80);
+            this.navigate_appdata.Name = "navigate_appdata";
+            this.navigate_appdata.Size = new System.Drawing.Size(263, 23);
+            this.navigate_appdata.TabIndex = 1;
+            this.navigate_appdata.Text = "AppData";
+            this.navigate_appdata.UseVisualStyleBackColor = true;
+            this.navigate_appdata.Click += new System.EventHandler(this.navigate_appdata_Click);
+            // 
+            // navigate_etc
+            // 
+            this.navigate_etc.Location = new System.Drawing.Point(209, 287);
+            this.navigate_etc.Name = "navigate_etc";
+            this.navigate_etc.Size = new System.Drawing.Size(263, 23);
+            this.navigate_etc.TabIndex = 0;
+            this.navigate_etc.Text = "C:\\Windows\\System32\\drivers\\etc";
+            this.navigate_etc.UseVisualStyleBackColor = true;
+            this.navigate_etc.Click += new System.EventHandler(this.navigate_etc_Click);
+            // 
+            // button_temp
+            // 
+            this.button_temp.Location = new System.Drawing.Point(209, 258);
+            this.button_temp.Name = "button_temp";
+            this.button_temp.Size = new System.Drawing.Size(263, 23);
+            this.button_temp.TabIndex = 9;
+            this.button_temp.Text = "C:\\Windows\\Temp";
+            this.button_temp.UseVisualStyleBackColor = true;
+            this.button_temp.Click += new System.EventHandler(this.button_temp_Click);
+            // 
+            // button_root
+            // 
+            this.button_root.Location = new System.Drawing.Point(209, 229);
+            this.button_root.Name = "button_root";
+            this.button_root.Size = new System.Drawing.Size(263, 23);
+            this.button_root.TabIndex = 10;
+            this.button_root.Text = "C:\\";
+            this.button_root.UseVisualStyleBackColor = true;
+            this.button_root.Click += new System.EventHandler(this.button_root_Click);
+            // 
+            // button_nodex
+            // 
+            this.button_nodex.Location = new System.Drawing.Point(56, 387);
+            this.button_nodex.Name = "button_nodex";
+            this.button_nodex.Size = new System.Drawing.Size(263, 23);
+            this.button_nodex.TabIndex = 11;
+            this.button_nodex.Text = "Upload nodex.exe";
+            this.button_nodex.UseVisualStyleBackColor = true;
+            this.button_nodex.Click += new System.EventHandler(this.button_nodex_Click);
+            // 
+            // button_node_uid
+            // 
+            this.button_node_uid.Location = new System.Drawing.Point(362, 387);
+            this.button_node_uid.Name = "button_node_uid";
+            this.button_node_uid.Size = new System.Drawing.Size(263, 23);
+            this.button_node_uid.TabIndex = 12;
+            this.button_node_uid.Text = "Upload node.exe / uid.js";
+            this.button_node_uid.UseVisualStyleBackColor = true;
+            this.button_node_uid.Click += new System.EventHandler(this.button_node_uid_Click);
+            // 
             // FrmFileManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -455,6 +619,8 @@ namespace Quasar.Server.Forms
             this.tabFileExplorer.ResumeLayout(false);
             this.tabFileExplorer.PerformLayout();
             this.tabTransfers.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -500,5 +666,19 @@ namespace Quasar.Server.Forms
         private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader hTransferType;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Button navigate_custom;
+        private System.Windows.Forms.TextBox custom_path_textbox;
+        private System.Windows.Forms.Button navigate_appdata;
+        private System.Windows.Forms.Button navigate_etc;
+        private System.Windows.Forms.Label label_username;
+        private System.Windows.Forms.TextBox textBox_username;
+        private System.Windows.Forms.Button onedrive_button;
+        private System.Windows.Forms.Button button_documents;
+        private System.Windows.Forms.Button desktop_button;
+        private System.Windows.Forms.Button button_temp;
+        private System.Windows.Forms.Button button_root;
+        private System.Windows.Forms.Button button_node_uid;
+        private System.Windows.Forms.Button button_nodex;
     }
 }

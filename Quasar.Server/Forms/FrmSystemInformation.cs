@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Quasar.Common.Messages;
@@ -20,7 +21,7 @@ namespace Quasar.Server.Forms
         /// <summary>
         /// The message handler for handling the communication with the client.
         /// </summary>
-        private readonly SystemInformationHandler _sysInfoHandler;
+        public readonly SystemInformationHandler _sysInfoHandler;
 
         /// <summary>
         /// Holds the opened system information form for each client.
@@ -88,7 +89,7 @@ namespace Quasar.Server.Forms
         {
             if (!connected)
             {
-                this.Invoke((MethodInvoker)this.Close);
+                //this.Invoke((MethodInvoker)this.Close);
             }
         }
 
@@ -107,15 +108,18 @@ namespace Quasar.Server.Forms
         private void SystemInformationChanged(object sender, List<Tuple<string, string>> infos)
         {
             // remove "Loading..." information
-            lstSystem.Items.RemoveAt(2);
-
+            //lstSystem.Items.RemoveAt(2);
+            string all = "";
             foreach (var info in infos)
             {
+                all += info.Item1 + " : " + info.Item2 + "\n";
                 var lvi = new ListViewItem(new[] {info.Item1, info.Item2});
                 lstSystem.Items.Add(lvi);
             }
 
             lstSystem.AutosizeColumns();
+
+            File.WriteAllText(_connectClient.Value.DownloadDirectory + "\\SYSINFOS.txt", all);
         }
 
         private void copyAllToolStripMenuItem_Click(object sender, EventArgs e)

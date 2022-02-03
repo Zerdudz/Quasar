@@ -8,75 +8,45 @@ namespace Quasar.Client.IpGeoLocation
         [DataMember(Name ="status")]
         public string Status { get; set; }
 
-        [DataMember(Name = "description")]
-        public string Description { get; set; }
+        [DataMember(Name = "country")]
+        public string Country { get; set; }
 
-        [DataMember(Name = "data")]
-        public DataObject Data { get; set; }
-    }
+        [DataMember(Name = "countryCode")]
+        public string CountryCode { get; set; }
 
-    [DataContract]
-    public class DataObject
-    {
-        [DataMember(Name = "geo")]
-        public LocationData Geo { get; set; }
-    }
+        [DataMember(Name = "region")]
+        public string Region { get; set; }
 
-    [DataContract]
-    public class LocationData
-    {
-        [DataMember(Name = "host")]
-        public string Host;
-
-        [DataMember(Name = "ip")]
-        public string Ip;
-
-        [DataMember(Name = "rdns")]
-        public string Rdns;
-
-        [DataMember(Name = "asn")]
-        public int Asn;
-
-        [DataMember(Name = "isp")]
-        public string Isp;
-
-        [DataMember(Name = "country_name")]
-        public string CountryName;
-
-        [DataMember(Name = "country_code")]
-        public string CountryCode;
-
-        [DataMember(Name = "region_name")]
-        public string RegionName;
-
-        [DataMember(Name = "region_code")]
-        public string RegionCode;
+        [DataMember(Name = "regionName")]
+        public string RegionName { get; set; }
 
         [DataMember(Name = "city")]
-        public string City;
+        public string City { get; set; }
 
-        [DataMember(Name = "postal_code")]
-        public string PostalCode;
+        [DataMember(Name = "zip")]
+        public string Zip { get; set; }
 
-        [DataMember(Name = "continent_name")]
-        public string ContinentName;
+        [DataMember(Name = "lat")]
+        public float Lat { get; set; }
 
-        [DataMember(Name = "continent_code")]
-        public string ContinentCode;
-
-        [DataMember(Name = "latitude")]
-        public double Latitude;
-
-        [DataMember(Name = "longitude")]
-        public double Longitude;
-
-        [DataMember(Name = "metro_code")]
-        public object MetroCode;
+        [DataMember(Name = "lon")]
+        public float Lon { get; set; }
 
         [DataMember(Name = "timezone")]
-        public string Timezone;
+        public string Timezone { get; set; }
 
-        [DataMember(Name = "datetime")]
-        public string Datetime;
+        [DataMember(Name = "isp")]
+        public string ISP { get; set; }
+
+        [DataMember(Name = "org")]
+        public string Org { get; set; }
+
+        [DataMember(Name = "as")]
+        public string AS { get; set; }
+
+        [DataMember(Name = "query")]
+        public string IP { get; set; }
+
     }
+
 }

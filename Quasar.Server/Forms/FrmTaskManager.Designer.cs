@@ -38,12 +38,14 @@ namespace Quasar.Server.Forms
             this.lineToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.lstTasks = new AeroListView();
+            this.lstTasks = new Quasar.Server.Controls.AeroListView();
             this.hProcessname = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hPID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.processesToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.freezeProcesstoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unfreezeProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -54,16 +56,18 @@ namespace Quasar.Server.Forms
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.killProcessToolStripMenuItem,
             this.startProcessToolStripMenuItem,
+            this.freezeProcesstoolStripMenuItem,
+            this.unfreezeProcessToolStripMenuItem,
             this.lineToolStripMenuItem,
             this.refreshToolStripMenuItem});
             this.contextMenuStrip.Name = "ctxtMenu";
-            this.contextMenuStrip.Size = new System.Drawing.Size(142, 76);
+            this.contextMenuStrip.Size = new System.Drawing.Size(181, 142);
             // 
             // killProcessToolStripMenuItem
             // 
             this.killProcessToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.cancel;
             this.killProcessToolStripMenuItem.Name = "killProcessToolStripMenuItem";
-            this.killProcessToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.killProcessToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.killProcessToolStripMenuItem.Text = "Kill Process";
             this.killProcessToolStripMenuItem.Click += new System.EventHandler(this.killProcessToolStripMenuItem_Click);
             // 
@@ -71,20 +75,20 @@ namespace Quasar.Server.Forms
             // 
             this.startProcessToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.application_go;
             this.startProcessToolStripMenuItem.Name = "startProcessToolStripMenuItem";
-            this.startProcessToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.startProcessToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.startProcessToolStripMenuItem.Text = "Start Process";
             this.startProcessToolStripMenuItem.Click += new System.EventHandler(this.startProcessToolStripMenuItem_Click);
             // 
             // lineToolStripMenuItem
             // 
             this.lineToolStripMenuItem.Name = "lineToolStripMenuItem";
-            this.lineToolStripMenuItem.Size = new System.Drawing.Size(138, 6);
+            this.lineToolStripMenuItem.Size = new System.Drawing.Size(177, 6);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.refresh;
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
@@ -113,6 +117,7 @@ namespace Quasar.Server.Forms
             this.lstTasks.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstTasks.FullRowSelect = true;
             this.lstTasks.GridLines = true;
+            this.lstTasks.HideSelection = false;
             this.lstTasks.Location = new System.Drawing.Point(3, 3);
             this.lstTasks.Name = "lstTasks";
             this.lstTasks.Size = new System.Drawing.Size(815, 465);
@@ -151,6 +156,22 @@ namespace Quasar.Server.Forms
             this.processesToolStripStatusLabel.Size = new System.Drawing.Size(70, 17);
             this.processesToolStripStatusLabel.Text = "Processes: 0";
             // 
+            // freezeProcesstoolStripMenuItem
+            // 
+            this.freezeProcesstoolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.lightning;
+            this.freezeProcesstoolStripMenuItem.Name = "freezeProcesstoolStripMenuItem";
+            this.freezeProcesstoolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.freezeProcesstoolStripMenuItem.Text = "Freeze Process";
+            this.freezeProcesstoolStripMenuItem.Click += new System.EventHandler(this.freezeProcesstoolStripMenuItem_Click);
+            // 
+            // unfreezeProcessToolStripMenuItem
+            // 
+            this.unfreezeProcessToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.actions;
+            this.unfreezeProcessToolStripMenuItem.Name = "unfreezeProcessToolStripMenuItem";
+            this.unfreezeProcessToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.unfreezeProcessToolStripMenuItem.Text = "Unfreeze Process";
+            this.unfreezeProcessToolStripMenuItem.Click += new System.EventHandler(this.unfreezeProcessToolStripMenuItem_Click);
+            // 
             // FrmTaskManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -188,5 +209,7 @@ namespace Quasar.Server.Forms
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel processesToolStripStatusLabel;
+        private System.Windows.Forms.ToolStripMenuItem freezeProcesstoolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unfreezeProcessToolStripMenuItem;
     }
 }
