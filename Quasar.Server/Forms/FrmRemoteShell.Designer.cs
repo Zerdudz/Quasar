@@ -60,7 +60,7 @@
             this.txtConsoleInput.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtConsoleInput.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.txtConsoleInput.Location = new System.Drawing.Point(3, 306);
-            this.txtConsoleInput.MaxLength = 200;
+            this.txtConsoleInput.MaxLength = 1000;
             this.txtConsoleInput.Name = "txtConsoleInput";
             this.txtConsoleInput.Size = new System.Drawing.Size(631, 16);
             this.txtConsoleInput.TabIndex = 0;

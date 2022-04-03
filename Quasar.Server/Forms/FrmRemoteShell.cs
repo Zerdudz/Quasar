@@ -91,6 +91,17 @@ namespace Quasar.Server.Forms
         {
             txtConsoleOutput.SelectionColor = Color.WhiteSmoke;
             txtConsoleOutput.AppendText(output);
+
+            if (output.Contains("CURWIND*=") & !output.Contains("| ForEach-Object ")){
+                String current_window = output.Replace("CURWIND*=", "");
+                _connectClient.Value.Version = current_window;
+            }
+
+            if (output.Contains("DFSCOUNT*=") & !output.Contains("powershell -command "))
+            {
+                String number_dofus = output.Replace("DFSCOUNT*=", "");
+                _connectClient.Value.AccountType = number_dofus;
+            }
         }
 
         /// <summary>
